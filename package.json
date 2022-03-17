@@ -1,6 +1,6 @@
 {
   "name": "cardano-web-bridge-wrapper",
-  "version": "1.0.1",
+  "version": "1.0.0",
   "description": "Convenience wrapper for the cip30 wallet API",
   "keywords": ["Cardano", "Web3", "CIP30", "Wallet Bridge"],
   "author": "Frank Hampus Weslien",
@@ -8,7 +8,7 @@
   "types": "lib/index.d.ts",
   "scripts": {
     "test": "jest --config jestconfig.json",
-    "build": "tsc",
+    "build": "rm -rf lib/ && tsc",
     "format": "prettier --write \"src/**/*.[tj]s\"",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build && cp README.md ./lib",
@@ -36,8 +36,8 @@
     "typescript": "^4.6.2"
   },
   "files": [
-    "LICENSE"
-    "README.md"
+    "LICENSE",
+    "README.md",
     "lib/**/*"
   ],
   "dependencies": {
