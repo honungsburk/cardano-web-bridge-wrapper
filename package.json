@@ -1,8 +1,13 @@
 {
   "name": "cardano-web-bridge-wrapper",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Convenience wrapper for the cip30 wallet API",
-  "keywords": ["Cardano", "Web3", "CIP30", "Wallet Bridge"],
+  "keywords": [
+    "Cardano",
+    "Web3",
+    "CIP30",
+    "Wallet Bridge"
+  ],
   "author": "Frank Hampus Weslien",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
