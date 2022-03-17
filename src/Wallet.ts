@@ -6,15 +6,15 @@ import type {
   RewardAddress,
   Transaction,
   Address,
-} from "@emurgo/cardano-serialization-lib-nodejs";
-import * as CardanoSerializationLib from "@emurgo/cardano-serialization-lib-nodejs";
-import * as CIP30 from "./CIP30";
-import * as Errors from "./errors"
+} from '@emurgo/cardano-serialization-lib-nodejs';
+import * as CardanoSerializationLib from '@emurgo/cardano-serialization-lib-nodejs';
+import * as CIP30 from './CIP30';
+import * as Errors from './errors';
 import { CustomError } from 'ts-custom-error';
 
-import { Buffer } from "buffer";
+import { Buffer } from 'buffer';
 
-export type NetworkID = "Mainnet" | "Testnet";
+export type NetworkID = 'Mainnet' | 'Testnet';
 
 export class Wallet<T, W> {
   private initAPI: CIP30.InitalAPI<T>;
@@ -26,7 +26,7 @@ export class Wallet<T, W> {
     initAPI: CIP30.InitalAPI<T>,
     enabledAPI: CIP30.EnabledAPI<T>,
     experimentalWrapperBuilder: (ex: T) => W,
-    lib: typeof CardanoSerializationLib
+    lib: typeof CardanoSerializationLib,
   ) {
     this.lib = lib;
     this.initAPI = initAPI;
@@ -49,8 +49,8 @@ export class Wallet<T, W> {
   }
 
   /**
-   * A URI image (e.g. data URI base64 or other) for img src for the wallet which 
-   * can be used inside of the dApp for the purpose of asking the user which 
+   * A URI image (e.g. data URI base64 or other) for img src for the wallet which
+   * can be used inside of the dApp for the purpose of asking the user which
    * wallet they would like to connect with.
    */
   name(): string {
@@ -103,7 +103,7 @@ export class Wallet<T, W> {
   async getNetworkId(): Promise<NetworkID> {
     try {
       const netID = await this.enabledAPI.getNetworkId();
-      return netID === 1 ? "Mainnet" : "Testnet";
+      return netID === 1 ? 'Mainnet' : 'Testnet';
     } catch (err: any) {
       throw firstDefinedWithDefault([toAPIError(err)], err);
     }
@@ -117,9 +117,7 @@ export class Wallet<T, W> {
   async getBalance(): Promise<Value> {
     try {
       const valueCBOR: CIP30.ValueCBOR = await this.enabledAPI.getBalance();
-      const value: Value = this.lib.Value.from_bytes(
-        Buffer.from(valueCBOR, "hex")
-      );
+      const value: Value = this.lib.Value.from_bytes(Buffer.from(valueCBOR, 'hex'));
       return value;
     } catch (err: any) {
       throw firstDefinedWithDefault([toAPIError(err)], err);
@@ -135,22 +133,17 @@ export class Wallet<T, W> {
    * @param amount the total value of all the assets all the utxos must be over
    * @param paginate
    */
-  async getUtxos(
-    amount?: Value,
-    paginate?: { page: number; limit: number }
-  ): Promise<TransactionUnspentOutput[]> {
+  async getUtxos(amount?: Value, paginate?: { page: number; limit: number }): Promise<TransactionUnspentOutput[]> {
     try {
       let amountCBOR: CIP30.ValueCBOR | undefined;
       if (amount) {
-        amountCBOR = Buffer.from(amount.to_bytes()).toString("hex");
+        amountCBOR = Buffer.from(amount.to_bytes()).toString('hex');
       }
-      const utxos: CIP30.TransactionUnspentOutputCBOR[] =
-        await this.enabledAPI.getUtxos(amountCBOR, paginate);
+      const utxos: CIP30.TransactionUnspentOutputCBOR[] = await this.enabledAPI.getUtxos(amountCBOR, paginate);
       const parsedUtxos = utxos.map((utxoCBOR) => {
-        const utxo: TransactionUnspentOutput =
-          this.lib.TransactionUnspentOutput.from_bytes(
-            Buffer.from(utxoCBOR, "hex")
-          );
+        const utxo: TransactionUnspentOutput = this.lib.TransactionUnspentOutput.from_bytes(
+          Buffer.from(utxoCBOR, 'hex'),
+        );
         return utxo;
       });
       return parsedUtxos;
@@ -168,15 +161,13 @@ export class Wallet<T, W> {
   async getChangeAddress(): Promise<BaseAddress> {
     try {
       const CBORAddress = await this.enabledAPI.getChangeAddress();
-      const changeAddress: Address = this.lib.Address.from_bytes(
-        Buffer.from(CBORAddress, "hex")
-      );
+      const changeAddress: Address = this.lib.Address.from_bytes(Buffer.from(CBORAddress, 'hex'));
       const baseAddress = this.lib.BaseAddress.from_address(changeAddress);
 
       if (baseAddress) {
         return baseAddress;
       } else {
-        throw new Error('Could not parse the change address')
+        throw new Error('Could not parse the change address');
       }
     } catch (err: any) {
       throw firstDefinedWithDefault([toAPIError(err)], err);
@@ -193,9 +184,7 @@ export class Wallet<T, W> {
       const usedAddresses = await this.enabledAPI.getUsedAddresses();
       const values = usedAddresses
         .map((CBORAddress) => {
-          const address: Address = this.lib.Address.from_bytes(
-            Buffer.from(CBORAddress, "hex")
-          );
+          const address: Address = this.lib.Address.from_bytes(Buffer.from(CBORAddress, 'hex'));
           return this.lib.BaseAddress.from_address(address);
         })
         .filter((v) => v !== undefined);
@@ -216,9 +205,7 @@ export class Wallet<T, W> {
       const usedAddresses = await this.enabledAPI.getUnusedAddresses();
       const values = usedAddresses
         .map((CBORAddress) => {
-          const address: Address = this.lib.Address.from_bytes(
-            Buffer.from(CBORAddress, "hex")
-          );
+          const address: Address = this.lib.Address.from_bytes(Buffer.from(CBORAddress, 'hex'));
           return this.lib.BaseAddress.from_address(address);
         })
         .filter((v) => v !== undefined);
@@ -236,16 +223,13 @@ export class Wallet<T, W> {
   async getRewardAddress(): Promise<RewardAddress> {
     try {
       const rewardAddressCBOR = await this.enabledAPI.getRewardAddress();
-      const address: Address = this.lib.Address.from_bytes(
-        Buffer.from(rewardAddressCBOR, "hex")
-      );
-      const rewardAddress: RewardAddress | undefined =
-        this.lib.RewardAddress.from_address(address);
+      const address: Address = this.lib.Address.from_bytes(Buffer.from(rewardAddressCBOR, 'hex'));
+      const rewardAddress: RewardAddress | undefined = this.lib.RewardAddress.from_address(address);
 
       if (rewardAddress) {
         return rewardAddress;
       } else {
-        throw new Error('Could not parse the reward address')
+        throw new Error('Could not parse the reward address');
       }
     } catch (err) {
       throw firstDefinedWithDefault([toAPIError(err)], err);
@@ -258,18 +242,13 @@ export class Wallet<T, W> {
    * @param partialSign weather or not all signatures must be provided by the wallet
    * @returns
    */
-  async signTx(
-    tx: Transaction,
-    partialSign?: boolean
-  ): Promise<TransactionWitnessSet> {
-    const CBORTx: string = Buffer.from(tx.to_bytes()).toString("hex");
+  async signTx(tx: Transaction, partialSign?: boolean): Promise<TransactionWitnessSet> {
+    const CBORTx: string = Buffer.from(tx.to_bytes()).toString('hex');
     try {
-      const txWitnessSetCBOR: CIP30.TransactionWitnessSetCBOR =
-        await this.enabledAPI.signTx(CBORTx, partialSign);
-      const txWitnessSet: TransactionWitnessSet =
-        this.lib.TransactionWitnessSet.from_bytes(
-          Buffer.from(txWitnessSetCBOR, "hex")
-        );
+      const txWitnessSetCBOR: CIP30.TransactionWitnessSetCBOR = await this.enabledAPI.signTx(CBORTx, partialSign);
+      const txWitnessSet: TransactionWitnessSet = this.lib.TransactionWitnessSet.from_bytes(
+        Buffer.from(txWitnessSetCBOR, 'hex'),
+      );
       return txWitnessSet;
     } catch (err) {
       throw firstDefinedWithDefault([toAPIError(err), toSignError(err)], err);
@@ -277,24 +256,24 @@ export class Wallet<T, W> {
   }
 
   /**
-   * NOTE: The string that is returned is CBOR string and not an object. I have 
-   * not used this endpoint in any of my own projects so I took the simplest 
+   * NOTE: The string that is returned is CBOR string and not an object. I have
+   * not used this endpoint in any of my own projects so I took the simplest
    * approach.
-   * 
+   *
    * Errors: APIError, DataSignError
    *
    * @param addr the address (pubkey) used to sign the payload
    * @param payload the payload to be signed
-   * @returns the signed CBOR 
+   * @returns the signed CBOR
    */
   async signData(addr: Address, payload: string): Promise<string> {
-      const addressCBOR: string = Buffer.from(addr.to_bytes()).toString("hex");
-      try {
-        return await this.enabledAPI.signData(addressCBOR, payload);
-      } catch (err) {
-        throw firstDefinedWithDefault([toAPIError(err), toDataSignError(err)], err);
-      }
+    const addressCBOR: string = Buffer.from(addr.to_bytes()).toString('hex');
+    try {
+      return await this.enabledAPI.signData(addressCBOR, payload);
+    } catch (err) {
+      throw firstDefinedWithDefault([toAPIError(err), toDataSignError(err)], err);
     }
+  }
 
   /**
    *
@@ -304,7 +283,7 @@ export class Wallet<T, W> {
    * @returns
    */
   async submitTx(tx: Transaction): Promise<CIP30.hash32> {
-    const CBORTx: string = Buffer.from(tx.to_bytes()).toString("hex");
+    const CBORTx: string = Buffer.from(tx.to_bytes()).toString('hex');
     try {
       return await this.enabledAPI.submitTx(CBORTx);
     } catch (err) {
@@ -314,22 +293,22 @@ export class Wallet<T, W> {
 }
 
 function firstDefinedWithDefault<A, B>(values: A[], or: B): A | B {
-  for(const val of values){
-    if(val){
-      return val
+  for (const val of values) {
+    if (val) {
+      return val;
     }
   }
 
-  return or
+  return or;
 }
 
 /****************** APIError ****************/
 
 function toAPIError(err: any): Errors.APIError | undefined {
   if (CIP30.isApiError(err)) {
-    return new Errors.APIError(err.code, err.info)
+    return new Errors.APIError(err.code, err.info);
   } else {
-    return undefined
+    return undefined;
   }
 }
 
@@ -337,9 +316,9 @@ function toAPIError(err: any): Errors.APIError | undefined {
 
 function toPaginateError(err: any): Errors.PaginateError | undefined {
   if (CIP30.isPaginateError(err)) {
-    return new Errors.PaginateError(err.maxSize, "");
+    return new Errors.PaginateError(err.maxSize, '');
   } else {
-    return undefined
+    return undefined;
   }
 }
 
@@ -347,29 +326,28 @@ function toPaginateError(err: any): Errors.PaginateError | undefined {
 
 function toDataSignError(err: any): Errors.DataSignError | undefined {
   if (CIP30.isDataSignError(err)) {
-    return new Errors.DataSignError(err.code, err.info)
+    return new Errors.DataSignError(err.code, err.info);
   } else {
-    return undefined
+    return undefined;
   }
 }
 
 /****************** TxSendError ****************/
 
-function toTxSendError(err: any):  Errors.TxSendError | undefined {
+function toTxSendError(err: any): Errors.TxSendError | undefined {
   if (CIP30.isTxSendError(err)) {
-    return new Errors.TxSendError(err.code, err.message !== undefined ? err.message : err.info)
+    return new Errors.TxSendError(err.code, err.message !== undefined ? err.message : err.info);
   } else {
-    return undefined
+    return undefined;
   }
 }
 
 /****************** TxSignError ****************/
 
-export function toSignError(err: any):  Errors.TxSignError | undefined {
+export function toSignError(err: any): Errors.TxSignError | undefined {
   if (CIP30.isTxSignError(err)) {
-    return new Errors.TxSignError(err.code, err.info)
+    return new Errors.TxSignError(err.code, err.info);
   } else {
-    return undefined
+    return undefined;
   }
 }
-

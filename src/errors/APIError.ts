@@ -8,7 +8,7 @@ import { CustomError } from 'ts-custom-error';
 export enum APIErrorCode {
   InvalidRequest = -1,
   InternalError = -2,
-  Refused = -3
+  Refused = -3,
 }
 export class APIError extends CustomError {
   code: APIErrorCode;

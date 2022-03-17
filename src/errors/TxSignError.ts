@@ -7,7 +7,7 @@ import { CustomError } from 'ts-custom-error';
  */
 enum TxSignErrorCode {
   ProofGeneration = 1,
-  UserDeclined = 2
+  UserDeclined = 2,
 }
 export class TxSignError extends CustomError {
   code: TxSignErrorCode;

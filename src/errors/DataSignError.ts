@@ -11,7 +11,7 @@ export enum DataSignErrorCode {
   ProofGeneration = 1,
   AddressNotPK = 2,
   UserDeclined = 3,
-  InvalidFormat = 4
+  InvalidFormat = 4,
 }
 export class DataSignError extends CustomError {
   code: DataSignErrorCode;

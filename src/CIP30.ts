@@ -6,7 +6,7 @@
  *
  *
  */
- export type CardanoWallets = {
+export type CardanoWallets = {
   [x: string]: InitalAPI<unknown>;
   // nami?: InitalAPI<NamiAPI>
 };
@@ -14,9 +14,7 @@
 /************ Experimental APIs *********/
 
 export type NamiAPI = {
-  onAccountChange: (
-    arg0: (addresses: [BaseAddressCBOR]) => void
-  ) => Promise<void>;
+  onAccountChange: (arg0: (addresses: [BaseAddressCBOR]) => void) => Promise<void>;
   onNetworkChange: (arg0: (network: number) => void) => Promise<void>;
   getCollateral(): TransactionUnspentOutputCBOR[];
 };
@@ -43,28 +41,18 @@ export type InitalAPI<T> = {
 };
 
 export function isInitalAPI(x: any): x is InitalAPI<any> {
-  return (
-    typeof x.icon === "string" &&
-    typeof x.name === "string" &&
-    typeof x.apiVersion === "string"
-  );
+  return typeof x.icon === 'string' && typeof x.name === 'string' && typeof x.apiVersion === 'string';
 }
 
 export type EnabledAPI<T> = {
   getBalance: () => Promise<ValueCBOR>;
-  getUtxos: (
-    amount?: ValueCBOR,
-    paginate?: { page: number; limit: number }
-  ) => Promise<TransactionUnspentOutputCBOR[]>;
+  getUtxos: (amount?: ValueCBOR, paginate?: { page: number; limit: number }) => Promise<TransactionUnspentOutputCBOR[]>;
   getNetworkId: () => Promise<number>;
   getRewardAddress: () => Promise<RewardAddressCBOR>;
   getChangeAddress: () => Promise<BaseAddressCBOR>;
   getUsedAddresses: () => Promise<BaseAddressCBOR[]>;
   getUnusedAddresses: () => Promise<BaseAddressCBOR[]>;
-  signTx: (
-    tx: TransactionCBOR,
-    partialSign?: boolean
-  ) => Promise<TransactionWitnessSetCBOR>;
+  signTx: (tx: TransactionCBOR, partialSign?: boolean) => Promise<TransactionWitnessSetCBOR>;
   signData: (addr: BaseAddressCBOR, payload: string) => Promise<string>;
   submitTx: (tx: TransactionCBOR) => Promise<hash32>;
   experimental: T;
@@ -93,7 +81,6 @@ export function isDataSignError(x: any): x is DataSignError {
   return x.code === 1 || x.code === 2 || x.code === 3 || x.code === 4;
 }
 
-
 /****************** PaginateError ****************/
 
 export type PaginateError = {
@@ -101,7 +88,7 @@ export type PaginateError = {
 };
 
 export function isPaginateError(x: any): x is PaginateError {
-  return typeof x.maxSize === "number";
+  return typeof x.maxSize === 'number';
 }
 
 /****************** TxSendError ****************/
@@ -116,7 +103,6 @@ export type TxSendError = {
 export function isTxSendError(x: any): x is TxSendError {
   return x.code === 1 || x.code === 2;
 }
-
 
 /****************** TxSignError ****************/
 

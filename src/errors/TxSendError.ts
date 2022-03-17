@@ -6,7 +6,7 @@ import { CustomError } from 'ts-custom-error';
  */
 export enum TxSendErrorCode {
   Refused = 1,
-  Failure = 2
+  Failure = 2,
 }
 export class TxSendError extends CustomError {
   code: TxSendErrorCode;
