@@ -12,4 +12,8 @@ The library adds three improvments over directly using the injected web bridges:
 
 You can use any of the available CBOR (de)searlization libraries
 [cardano serialization library](https://www.npmjs.com/package/@emurgo/cardano-serialization-lib-browser)
+
+## Installing
+
+`npm i cardano-web-bridge-wrapper`
  
