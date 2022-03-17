@@ -6,7 +6,7 @@ Convenience wrapper for the [cip30 wallet API](https://github.com/cardano-founda
 The library adds three improvments over directly using the injected web bridges:
 * Types
 * Automatically convert to and from CBOR
-* Nicer error objects
+* Proper error objects
 
 ## CBOR conversion library
 
