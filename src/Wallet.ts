@@ -140,7 +140,7 @@ export class Wallet<T, W> {
     paginate?: { page: number; limit: number }
   ): Promise<TransactionUnspentOutput[]> {
     try {
-      let amountCBOR: CIP30.ValueCBOR | undefined = undefined;
+      let amountCBOR: CIP30.ValueCBOR | undefined;
       if (amount) {
         amountCBOR = Buffer.from(amount.to_bytes()).toString("hex");
       }
