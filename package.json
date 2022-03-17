@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/honungsburk/cardano-web-bridge-wrapper/issues"
   },
-  "homepage": "https://github.com/honungsburk/cardano-web-bridge-wrapper#readme"
+  "homepage": "https://github.com/honungsburk/cardano-web-bridge-wrapper#readme",
+  "devDependencies": {
+    "typescript": "^4.6.2"
+  }
 }
