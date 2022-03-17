@@ -344,7 +344,7 @@ function toTxSendError(err: any): Errors.TxSendError | undefined {
 
 /****************** TxSignError ****************/
 
-export function toSignError(err: any): Errors.TxSignError | undefined {
+function toSignError(err: any): Errors.TxSignError | undefined {
   if (CIP30.isTxSignError(err)) {
     return new Errors.TxSignError(err.code, err.info);
   } else {
