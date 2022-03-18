@@ -1,6 +1,6 @@
 {
   "name": "cardano-web-bridge-wrapper",
-  "version": "1.0.1",
+  "version": "2.0.0",
   "description": "Convenience wrapper for the cip30 wallet API",
   "keywords": [
     "Cardano",
