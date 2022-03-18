@@ -1,4 +1,5 @@
 import { CustomError } from 'ts-custom-error';
+import { WebBridgeError } from './WebBridgeError';
 
 /**
  * - ProofGeneration - Wallet could not sign the data (e.g. does not have the secret key associated with the address)
@@ -13,7 +14,7 @@ export enum DataSignErrorCode {
   UserDeclined = 3,
   InvalidFormat = 4,
 }
-export class DataSignError extends CustomError {
+export class DataSignError extends CustomError implements WebBridgeError {
   code: DataSignErrorCode;
   info: string;
 
@@ -21,5 +22,8 @@ export class DataSignError extends CustomError {
     super();
     this.code = code;
     this.info = info;
+  }
+  stringCode(): string {
+    return DataSignErrorCode[this.code];
   }
 }

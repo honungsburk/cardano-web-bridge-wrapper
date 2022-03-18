@@ -1,5 +1,3 @@
-import { CustomError } from 'ts-custom-error';
-
 export interface WebBridgeError {
   /**
    * The string representation of the error code
@@ -9,4 +7,8 @@ export interface WebBridgeError {
    * Info string describing the error that occurred
    */
   info: string;
+}
+
+export function isWebBridgeError(x: any): x is WebBridgeError {
+  return x.info && x.stringCode;
 }

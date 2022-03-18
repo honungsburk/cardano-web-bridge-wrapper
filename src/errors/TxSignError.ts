@@ -1,4 +1,5 @@
 import { CustomError } from 'ts-custom-error';
+import { WebBridgeError } from './WebBridgeError';
 
 /**
  * ProofGeneration - User has accepted the transaction sign, but the wallet was
@@ -9,7 +10,7 @@ enum TxSignErrorCode {
   ProofGeneration = 1,
   UserDeclined = 2,
 }
-export class TxSignError extends CustomError {
+export class TxSignError extends CustomError implements WebBridgeError {
   code: TxSignErrorCode;
   info: string;
 
@@ -17,5 +18,9 @@ export class TxSignError extends CustomError {
     super();
     this.code = code;
     this.info = info;
+  }
+
+  stringCode(): string {
+    return TxSignErrorCode[this.code];
   }
 }
