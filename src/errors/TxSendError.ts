@@ -1,4 +1,5 @@
 import { CustomError } from 'ts-custom-error';
+import { WebBridgeError } from './WebBridgeError';
 
 /**
  * - Refused - Wallet refuses to send the tx (could be rate limiting)
@@ -8,7 +9,7 @@ export enum TxSendErrorCode {
   Refused = 1,
   Failure = 2,
 }
-export class TxSendError extends CustomError {
+export class TxSendError extends CustomError implements WebBridgeError {
   code: TxSendErrorCode;
   info: string;
 
@@ -16,5 +17,8 @@ export class TxSendError extends CustomError {
     super();
     this.code = code;
     this.info = info;
+  }
+  stringCode(): string {
+    return TxSendErrorCode[this.code];
   }
 }
