@@ -16,7 +16,7 @@
     "build": "rm -rf lib/ && tsc",
     "format": "prettier --write \"src/**/*.[tj]s\"",
     "lint": "tslint -p tsconfig.json",
-    "prepare": "npm run build && cp README.md ./lib",
+    "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",
     "preversion": "npm run lint",
     "version": "npm run format && git add -A src",
