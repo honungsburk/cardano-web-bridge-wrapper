@@ -1,5 +1,5 @@
 import { CustomError } from 'ts-custom-error';
-
+import { WebBridgeError } from './WebBridgeError';
 /**
  * - InvalidRequest - Inputs do not conform to this spec or are otherwise invalid.
  * - InternalError - An error occurred during execution of this API call.
@@ -10,7 +10,7 @@ export enum APIErrorCode {
   InternalError = -2,
   Refused = -3,
 }
-export class APIError extends CustomError {
+export class APIError extends CustomError implements WebBridgeError {
   code: APIErrorCode;
   info: string;
 
@@ -18,5 +18,9 @@ export class APIError extends CustomError {
     super();
     this.code = code;
     this.info = info;
+  }
+
+  stringCode(): string {
+    return APIErrorCode[this.code];
   }
 }

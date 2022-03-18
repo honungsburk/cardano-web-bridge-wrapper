@@ -1,2 +1,3 @@
 export * from './Wallet';
-export * from './CIP30';
+export * from './BasicWallet';
+export * from './errors';
