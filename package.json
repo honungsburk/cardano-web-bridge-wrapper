@@ -38,7 +38,6 @@
     "ts-jest": "^27.1.3",
     "tslint": "^6.1.3",
     "tslint-config-prettier": "^1.18.0",
-    "@emurgo/cardano-serialization-lib-nodejs": "10.x-11.x",
     "typescript": "^4.6.2"
   },
   "files": [
@@ -46,6 +45,9 @@
     "README.md",
     "lib/**/*"
   ],
+  "peerDependencies": {
+    "@emurgo/cardano-serialization-lib-nodejs": "10.x-11.x"
+  },
   "dependencies": {
     "buffer": "^6.0.3",
     "ts-custom-error": "^3.2.0"
