@@ -46,7 +46,10 @@ export function isInitalAPI(x: any): x is InitalAPI<any> {
 
 export type EnabledAPI<T> = {
   getBalance: () => Promise<ValueCBOR>;
-  getUtxos: (amount?: ValueCBOR, paginate?: { page: number; limit: number }) => Promise<TransactionUnspentOutputCBOR[]>;
+  getUtxos: (
+    amount?: ValueCBOR,
+    paginate?: { page: number; limit: number },
+  ) => Promise<TransactionUnspentOutputCBOR[] | null>;
   getNetworkId: () => Promise<number>;
   getRewardAddress: () => Promise<RewardAddressCBOR>;
   getChangeAddress: () => Promise<BaseAddressCBOR>;

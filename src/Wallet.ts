@@ -139,7 +139,8 @@ export class Wallet<T, W> {
       if (amount) {
         amountCBOR = Buffer.from(amount.to_bytes()).toString('hex');
       }
-      const utxos: CIP30.TransactionUnspentOutputCBOR[] = await this.enabledAPI.getUtxos(amountCBOR, paginate);
+      const _utxos: CIP30.TransactionUnspentOutputCBOR[] | null = await this.enabledAPI.getUtxos(amountCBOR, paginate);
+      const utxos: CIP30.TransactionUnspentOutputCBOR[] = _utxos ? _utxos : [];
       const parsedUtxos = utxos.map((utxoCBOR) => {
         const utxo: TransactionUnspentOutput = this.lib.TransactionUnspentOutput.from_bytes(
           Buffer.from(utxoCBOR, 'hex'),
