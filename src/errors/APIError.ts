@@ -9,6 +9,7 @@ export enum APIErrorCode {
   InvalidRequest = -1,
   InternalError = -2,
   Refused = -3,
+  AccountChange = -4,
 }
 export class APIError extends CustomError implements WebBridgeError {
   code: APIErrorCode;
