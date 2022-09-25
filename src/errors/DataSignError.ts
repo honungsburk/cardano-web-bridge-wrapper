@@ -7,6 +7,9 @@ import { WebBridgeError } from './WebBridgeError';
  * - UserDeclined - User declined to sign the data
  * - InvalidFormat - If a wallet enforces data format requirements, this error signifies that
  * the data did not conform to valid formats.
+ *
+ * NOTE: I cna not find "InvalidFormat" in the spec but it might be used by some
+ * wallets so I will not remove it until I'm sur eit is not used.
  */
 export enum DataSignErrorCode {
   ProofGeneration = 1,
