@@ -136,7 +136,7 @@ test('getCollateral with no utxos', async () => {
   expect(utxos.length).toBe(0);
 });
 
-test('getCollateral with no utxo', async () => {
+test('getCollateral with 1 utxo', async () => {
   const wallet = createWallet((walletEnabledAPI) => {
     walletEnabledAPI.getCollateral = async () => [toHex(mkUtxo(1, Value.new(BigNum.from_str('5000000'))).to_bytes())];
   });
@@ -175,7 +175,7 @@ test('getUtxos with no utxos', async () => {
   expect(utxos.length).toBe(0);
 });
 
-test('getUtxos with no utxo', async () => {
+test('getUtxos with 1 utxo', async () => {
   const wallet = createWallet((walletEnabledAPI) => {
     walletEnabledAPI.getUtxos = async () => [toHex(mkUtxo(1, Value.new(BigNum.from_str('1000000'))).to_bytes())];
   });
