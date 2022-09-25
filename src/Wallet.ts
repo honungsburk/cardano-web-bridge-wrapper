@@ -6,6 +6,7 @@ import type {
   RewardAddress,
   Transaction,
   Address,
+  BigNum,
 } from '@emurgo/cardano-serialization-lib-nodejs';
 import * as CardanoSerializationLib from '@emurgo/cardano-serialization-lib-nodejs';
 import * as CIP30 from './CIP30';
@@ -119,6 +120,23 @@ export class Wallet<T, W> {
       const valueCBOR: CIP30.ValueCBOR = await this.enabledAPI.getBalance();
       const value: Value = this.lib.Value.from_bytes(Buffer.from(valueCBOR, 'hex'));
       return value;
+    } catch (err: any) {
+      throw firstDefinedWithDefault([toAPIError(err)], err);
+    }
+  }
+
+  async getCollateral(params: { amount: BigNum }): Promise<TransactionUnspentOutput[]> {
+    try {
+      const amountCBOR = Buffer.from(params.amount.to_bytes()).toString('hex');
+      const _utxos = await this.enabledAPI.getCollateral({ amount: amountCBOR });
+      const utxos: CIP30.TransactionUnspentOutputCBOR[] = _utxos ? _utxos : [];
+      const parsedUtxos = utxos.map((utxoCBOR) => {
+        const utxo: TransactionUnspentOutput = this.lib.TransactionUnspentOutput.from_bytes(
+          Buffer.from(utxoCBOR, 'hex'),
+        );
+        return utxo;
+      });
+      return parsedUtxos;
     } catch (err: any) {
       throw firstDefinedWithDefault([toAPIError(err)], err);
     }

@@ -32,6 +32,7 @@ function fakeWalletEnableAPI(): CIP30.EnabledAPI<undefined> {
     signTx: async () => '',
     signData: async () => '',
     submitTx: async () => '',
+    getCollateral: async () => [],
     experimental: undefined,
   };
 }
@@ -117,6 +118,45 @@ test('getBalance handles APIError', async () => {
 
   try {
     await wallet.getBalance();
+    expect(false).toBe(true);
+  } catch (err) {
+    expect(err).toBeInstanceOf(Errors.APIError);
+  }
+});
+
+////////////////////////////////////////////////////////////////////////////////
+// getCollateral
+////////////////////////////////////////////////////////////////////////////////
+
+test('getCollateral with no utxos', async () => {
+  const wallet = createWallet((walletEnabledAPI) => {
+    walletEnabledAPI.getCollateral = async () => [];
+  });
+  const utxos = await wallet.getCollateral({ amount: BigNum.from_str('1000000') });
+  expect(utxos.length).toBe(0);
+});
+
+test('getCollateral with no utxo', async () => {
+  const wallet = createWallet((walletEnabledAPI) => {
+    walletEnabledAPI.getCollateral = async () => [toHex(mkUtxo(1, Value.new(BigNum.from_str('5000000'))).to_bytes())];
+  });
+  const utxos = await wallet.getCollateral({ amount: BigNum.from_str('1000000') });
+  expect(utxos.length).toBe(1);
+});
+
+test('getCollateral handles APIError', async () => {
+  const apiError: CIP30.APIError = {
+    code: -1,
+    info: 'Test error',
+  };
+  const wallet = createWallet((walletEnabledAPI) => {
+    walletEnabledAPI.getCollateral = async () => {
+      throw apiError;
+    };
+  });
+
+  try {
+    await await wallet.getCollateral({ amount: BigNum.from_str('1000000') });
     expect(false).toBe(true);
   } catch (err) {
     expect(err).toBeInstanceOf(Errors.APIError);

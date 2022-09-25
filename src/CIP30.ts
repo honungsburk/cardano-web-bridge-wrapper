@@ -30,6 +30,7 @@ export type TransactionCBOR = string;
 export type hash32 = string;
 export type TransactionWitnessSetCBOR = string;
 export type ValueCBOR = string;
+export type CoinCBOR = string;
 export type TransactionUnspentOutputCBOR = string;
 
 export type InitalAPI<T> = {
@@ -58,6 +59,7 @@ export type EnabledAPI<T> = {
   signTx: (tx: TransactionCBOR, partialSign?: boolean) => Promise<TransactionWitnessSetCBOR>;
   signData: (addr: BaseAddressCBOR, payload: string) => Promise<string>;
   submitTx: (tx: TransactionCBOR) => Promise<hash32>;
+  getCollateral: (params: { amount: CoinCBOR }) => Promise<TransactionUnspentOutputCBOR[] | null>;
   experimental: T;
 };
 
